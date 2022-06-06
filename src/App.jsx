@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react'
-import './style.css'
-import { SearchCityForm } from './components/search-form'
-import { WeatherInfo } from './components/weather-info'
-import { getCityData, getCityDataUrl, getForecastUrl } from './js/request'
-import { FavouriteCitiesList } from './components/favourites/favourite-list'
-import { LOCAL_STORAGE } from './js/storage'
+import { useEffect, useState } from 'react';
+import { setCurrentCity, addFavouriteCity, removeFavouriteCity, setCurrentCityAsync } from './js/actions';
+import './style.css';
+import { SearchCityForm } from './components/search-form';
+import { WeatherInfo } from './components/weather-info';
+import { getCityData, getCityDataUrl, getForecastUrl } from './js/request';
+import { FavouriteCitiesList } from './components/favourites/favourite-list';
+import LOCAL_STORAGE from './js/storage';
+import store from './js/store';
 
 function App() {
   const [text, setText] = useState('');
-  const [cityName, setCityName] = useState(LOCAL_STORAGE.getCurrentCity() || '');
   const [cityData, setCityData] = useState(null);
   const [forecast, setForecast] = useState(null);
   const [favourites, setFavourites] = useState(LOCAL_STORAGE.getFavouriteCities() || []);
@@ -21,52 +22,54 @@ function App() {
     const isAdded = event.target.checked;
 
     if (isAdded) {
+      store.dispatch(addFavouriteCity(cityName));
       setFavourites([...favourites, cityName]);
     }
   };
 
   function handleDelete(cityName) {
+    store.dispatch(removeFavouriteCity(cityName));
     setFavourites(favourites.filter(city => city !== cityName));
   };
 
   function handleForm(event) {
     event.preventDefault();
 
-    setCityName(text);
+    store.dispatch(setCurrentCity(text));
     setText('');
   };
 
   useEffect(() => {
-    getCityData(getCityDataUrl(cityName))
+    store.dispatch(setCurrentCityAsync(store.getState().currentCity));
+    LOCAL_STORAGE.setCurrentCity(store.getState().currentCity);
+    getCityData(getCityDataUrl(store.getState().currentCity))
       .then(cityData => {
         setCityData(cityData);
-
-        LOCAL_STORAGE.setCurrentCity(cityName);
       })
       .catch(error => {
         console.log(error.message)
       });
 
-    getCityData(getForecastUrl(cityName))
+    getCityData(getForecastUrl(store.getState().currentCity))
       .then(forecastData => {
         setForecast(forecastData)
       })
       .catch(error => {
-        console.log(error.message)
+        alert(error.message)
       });
-  }, [cityName]);
+  }, [store.getState().currentCity]);
 
   useEffect(() => {
-    LOCAL_STORAGE.saveFavouriteCities(favourites);
-  }, [favourites]);
+    LOCAL_STORAGE.saveFavouriteCities(store.getState().favourites);
+  }, [store.getState().favourites]);
 
   return (
     <section className='wrapper'>
       <div className='weather'>
         <SearchCityForm onChange={handleInput} onSubmit={handleForm} value={text} />
         <div className='weather__content'>
-          <WeatherInfo cityData={cityData} forecastData={forecast} favouriteList={favourites} handleFavourite={handleFavourite} />
-          <FavouriteCitiesList favouriteList={favourites} setCityData={setCityData} setForecast={setForecast} handleDelete={handleDelete} />
+          <WeatherInfo cityData={cityData} forecastData={forecast} handleFavourite={handleFavourite} />
+          <FavouriteCitiesList setCityData={setCityData} setForecast={setForecast} handleDelete={handleDelete} />
         </div>
       </div>
     </section>

@@ -1,7 +1,9 @@
-import { FavouriteItem } from "./favourite-item"
+import { FavouriteItem } from "./favourite-item";
+import store from "../../js/store";
 
 export function FavouriteCitiesList(props) {
-  const {setCityData, handleDelete, favouriteList, setForecast} = props;
+  const {setCityData, handleDelete, setForecast} = props;
+  const favouritesList = store.getState().favourites;
 
   return (
     <div className='weather__favourite'>
@@ -10,7 +12,7 @@ export function FavouriteCitiesList(props) {
       </h3>
       <div className='favourite__list'>
         {
-          favouriteList.map((city, index) => {
+          favouritesList.map((city, index) => {
             return <FavouriteItem key={index} cityName={city} setCityData={setCityData} setForecast={setForecast} handleDelete={handleDelete} />
           })
         }

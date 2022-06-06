@@ -5,13 +5,13 @@ import { ForecastInfoTab } from "./forecast/info-tab";
 import { TabSwitcher } from "./tabs";
 
 export function WeatherInfo(props) {
-  const {cityData, favouriteList, handleFavourite, forecastData} = props;
+  const {cityData, handleFavourite, forecastData} = props;
   const [tab, setTab] = useState('now');
   let Tab;
 
   switch (tab) {
     case 'now':
-      Tab = <NowInfoTab cityData={cityData} favouriteList={favouriteList} handleFavourite={handleFavourite} />
+      Tab = <NowInfoTab cityData={cityData} handleFavourite={handleFavourite} />
       break
     case 'details':
       Tab = <DetailsInfoTab cityData={cityData} />

@@ -1,6 +1,4 @@
-import { getCityDataUrl, getCityData, getForecastUrl } from './request';
-
-export const LOCAL_STORAGE = {
+const LOCAL_STORAGE = {
   saveFavouriteCities: function(cityList) {
     localStorage.setItem('favouriteCities', JSON.stringify([...cityList]));
   },
@@ -13,7 +11,6 @@ export const LOCAL_STORAGE = {
   getCurrentCity: function() {
     return localStorage.getItem('currentCity')
   },
-  loadStorage: function() {
-    return
-  }
 }
+
+export default LOCAL_STORAGE
