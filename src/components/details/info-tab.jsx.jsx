@@ -3,7 +3,7 @@ import { WeatherProperty } from "./property";
 import { convertUnixTime } from "../../helpers/time-converter";
 
 export function DetailsInfoTab(props) {
-  const {cityData} = props;
+  const cityData = store.getState().cityData;
   const sys = cityData?.sys ? {
     sunrise: `${convertUnixTime(cityData.sys.sunrise).hours}:${convertUnixTime(cityData.sys.sunrise).minutes}`,
     sunset: `${convertUnixTime(cityData.sys.sunset).hours}:${convertUnixTime(cityData.sys.sunset).minutes}`,

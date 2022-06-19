@@ -3,14 +3,13 @@ import { setCurrentCity, addFavouriteCity, removeFavouriteCity, setCurrentCityAs
 import './style.css';
 import { SearchCityForm } from './components/search-form';
 import { WeatherInfo } from './components/weather-info';
-import { getCityData, getCityDataUrl, getForecastUrl } from './js/request';
+import { checkErrorCode, getCityData, getForecastUrl } from './js/request';
 import { FavouriteCitiesList } from './components/favourites/favourite-list';
 import LOCAL_STORAGE from './js/storage';
 import store from './js/store';
 
 function App() {
   const [text, setText] = useState('');
-  const [cityData, setCityData] = useState(null);
   const [forecast, setForecast] = useState(null);
   const [favourites, setFavourites] = useState(LOCAL_STORAGE.getFavouriteCities() || []);
 
@@ -34,7 +33,7 @@ function App() {
 
   function handleForm(event) {
     event.preventDefault();
-
+    
     store.dispatch(setCurrentCity(text));
     setText('');
   };
@@ -42,13 +41,6 @@ function App() {
   useEffect(() => {
     store.dispatch(setCurrentCityAsync(store.getState().currentCity));
     LOCAL_STORAGE.setCurrentCity(store.getState().currentCity);
-    getCityData(getCityDataUrl(store.getState().currentCity))
-      .then(cityData => {
-        setCityData(cityData);
-      })
-      .catch(error => {
-        console.log(error.message)
-      });
 
     getCityData(getForecastUrl(store.getState().currentCity))
       .then(forecastData => {
@@ -68,8 +60,8 @@ function App() {
       <div className='weather'>
         <SearchCityForm onChange={handleInput} onSubmit={handleForm} value={text} />
         <div className='weather__content'>
-          <WeatherInfo cityData={cityData} forecastData={forecast} handleFavourite={handleFavourite} />
-          <FavouriteCitiesList setCityData={setCityData} setForecast={setForecast} handleDelete={handleDelete} />
+          <WeatherInfo forecastData={forecast} handleFavourite={handleFavourite} />
+          <FavouriteCitiesList setForecast={setForecast} handleDelete={handleDelete} />
         </div>
       </div>
     </section>
