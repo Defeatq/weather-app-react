@@ -28,7 +28,6 @@ function setCurrentCityAsync(cityName) {
         if (checkErrorCode(json.cod)) {
           dispatch(setCurrentCity(json.name));
           dispatch(setCurrentCityData(json));
-          console.log(json)
         }
       })
   }

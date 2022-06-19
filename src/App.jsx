@@ -3,7 +3,7 @@ import { setCurrentCity, addFavouriteCity, removeFavouriteCity, setCurrentCityAs
 import './style.css';
 import { SearchCityForm } from './components/search-form';
 import { WeatherInfo } from './components/weather-info';
-import { checkErrorCode, getCityData, getForecastUrl } from './js/request';
+import { getCityData, getForecastUrl } from './js/request';
 import { FavouriteCitiesList } from './components/favourites/favourite-list';
 import LOCAL_STORAGE from './js/storage';
 import store from './js/store';
