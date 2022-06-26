@@ -6,7 +6,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 const store = configureStore({
   reducer: weatherInit,
-  middleware: [ thunk ],
+  middleware: [thunk],
 });
 
 // const store = createStore(
