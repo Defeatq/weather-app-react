@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { ADD_CITY, SET_CITY, REMOVE_CITY, SET_DATA } from "./actions";
+import { addFavouriteCity, setCurrentCity, removeFavouriteCity, setCurrentCityData } from "./actions";
 import LOCAL_STORAGE from "./storage";
 
 const initialState = {
@@ -53,22 +53,22 @@ const initialState = {
 
 const weatherInit = createReducer(initialState, (builder) => {
   builder
-    .addCase(SET_CITY, (state, action) => {
+    .addCase(setCurrentCity, (state, action) => {
       Object.assign(state, {
         currentCity: action.payload,
       })
     })
-    .addCase(ADD_CITY, (state, action) => {
+    .addCase(addFavouriteCity, (state, action) => {
       Object.assign(state, {
         favourites: [...state.favourites, action.payload],
       })
     })
-    .addCase(REMOVE_CITY, (state, action) => {
+    .addCase(removeFavouriteCity, (state, action) => {
       Object.assign(state, {
         favourites: state.favourites.filter(city => city !== action.payload),
       });
     })
-    .addCase(SET_DATA, (state, action) => {
+    .addCase(setCurrentCityData, (state, action) => {
       Object.assign(state, {
         cityData: action.payload,
       });

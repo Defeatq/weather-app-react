@@ -1,16 +1,10 @@
+import { createAction } from '@reduxjs/toolkit';
 import { checkErrorCode, getCityDataUrl } from './request';
 
 const SET_CITY = 'SET_CITY';
 const ADD_CITY = 'ADD_CITY';
 const REMOVE_CITY = 'REMOVE_CITY';
 const SET_DATA = 'SET_DATA';
-
-const createAction = (type) => (payload) => {
-  return {
-    type,
-    payload,
-  }
-}
 
 const setCurrentCity = createAction(SET_CITY);
 

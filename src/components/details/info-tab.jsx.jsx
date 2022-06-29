@@ -1,3 +1,4 @@
+import store from "../../js/store";
 import { DetailsHeader } from "./header"
 import { WeatherProperty } from "./property";
 import { convertUnixTime } from "../../helpers/time-converter";
