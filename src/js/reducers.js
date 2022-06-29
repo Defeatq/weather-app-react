@@ -1,3 +1,4 @@
+import { createReducer } from "@reduxjs/toolkit";
 import { ADD_CITY, SET_CITY, REMOVE_CITY, SET_DATA } from "./actions";
 import LOCAL_STORAGE from "./storage";
 
@@ -50,27 +51,51 @@ const initialState = {
   },
 }
 
-function weatherInit(state = initialState, action) {
-  switch (action.type) {
-    case SET_CITY:
-      return Object.assign({}, state, {
+const weatherInit = createReducer(initialState, (builder) => {
+  builder
+    .addCase(SET_CITY, (state, action) => {
+      Object.assign(state, {
         currentCity: action.payload,
-      });
-    case ADD_CITY:
-      return Object.assign({}, state, {
+      })
+    })
+    .addCase(ADD_CITY, (state, action) => {
+      Object.assign(state, {
         favourites: [...state.favourites, action.payload],
-      });
-    case REMOVE_CITY:
-      return Object.assign({}, state, {
+      })
+    })
+    .addCase(REMOVE_CITY, (state, action) => {
+      Object.assign(state, {
         favourites: state.favourites.filter(city => city !== action.payload),
       });
-    case SET_DATA:
-      return Object.assign({}, state, {
+    })
+    .addCase(SET_DATA, (state, action) => {
+      Object.assign(state, {
         cityData: action.payload,
       });
-    default:
-      return state
-  }
-}
+    });
+});
+
+// function weatherInit(state = initialState, action) {
+//   switch (action.type) {
+//     case SET_CITY:
+//       return Object.assign({}, state, {
+//         currentCity: action.payload,
+//       });
+//     case ADD_CITY:
+//       return Object.assign({}, state, {
+//         favourites: [...state.favourites, action.payload],
+//       });
+//     case REMOVE_CITY:
+//       return Object.assign({}, state, {
+//         favourites: state.favourites.filter(city => city !== action.payload),
+//       });
+//     case SET_DATA:
+//       return Object.assign({}, state, {
+//         cityData: action.payload,
+//       });
+//     default:
+//       return state
+//   }
+// }
 
 export default weatherInit
